@@ -57,8 +57,20 @@ public class AppPerformanceService {
         // 过滤掉已下架的场次
         sessions = sessions.stream().filter(session -> !PerformanceStatus.OFFLINE.equals(session.getStatus())).collect(Collectors.toList());
         if (CollUtil.isEmpty(sessions)) {
+            // 如果场次为空，则把演出的状态设置为未开始售票
             performanceVO.setStatus(PerformanceStatus.COMING_SOON);
             return performanceVO;
+        }
+
+        performanceVO.setSessions(sessions.stream().map(this::fullPerformanceSessionVO).collect(Collectors.toList()));
+
+        List<PerformanceTicketVO> allTickets = performanceVO.getSessions().stream()
+                .filter(session -> CollUtil.isNotEmpty(session.getTickets()))
+                .flatMap(session -> session.getTickets().stream()).collect(Collectors.toList());
+
+        // 如果票档为空，则把演出的状态设置为未开始售票
+        if (CollUtil.isEmpty(allTickets)) {
+            performanceVO.setStatus(PerformanceStatus.COMING_SOON);
         }
 
         // 取出所有演出开始时间和结束时间
@@ -68,17 +80,10 @@ public class AppPerformanceService {
         // 组装成 showTime 字符串
         performanceVO.setShowTime(this.buildShowTime(showTimes));
 
-        performanceVO.setSessions(sessions.stream().map(this::fullPerformanceSessionVO).collect(Collectors.toList()));
-
         // 计算最低和最高价格
-        List<PerformanceTicketVO> tickets = performanceVO.getSessions().stream()
-                .filter(session -> CollUtil.isNotEmpty(session.getTickets()))
-                .flatMap(session -> session.getTickets().stream())
-                .collect(Collectors.toList());
-
-        if (!tickets.isEmpty()) {
-            performanceVO.setMinPrice(tickets.stream().map(PerformanceTicketVO::getPrice).min(BigDecimal::compareTo).get());
-            performanceVO.setMaxPrice(tickets.stream().map(PerformanceTicketVO::getPrice).max(BigDecimal::compareTo).get());
+        if (!allTickets.isEmpty()) {
+            performanceVO.setMinPrice(allTickets.stream().map(PerformanceTicketVO::getPrice).min(BigDecimal::compareTo).get());
+            performanceVO.setMaxPrice(allTickets.stream().map(PerformanceTicketVO::getPrice).max(BigDecimal::compareTo).get());
         }
 
         // 先看看是不是所有的场次都未开始售票，是的话把演出的状态设置为未开始售票
