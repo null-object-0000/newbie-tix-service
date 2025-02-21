@@ -68,4 +68,16 @@ public class PerformanceManagerController {
         
         return ResponseEntity.ok(performances);
     }
+
+    @PutMapping("/{id}/offline")
+    public ResponseEntity<Performance> takeOffline(@PathVariable Long id) {
+        Performance performance = performanceService.takeOffline(id);
+        return ResponseEntity.ok(performance);
+    }
+
+    @PutMapping("/{id}/online")
+    public ResponseEntity<Performance> takeOnline(@PathVariable Long id) {
+        Performance performance = performanceService.takeOnline(id);
+        return ResponseEntity.ok(performance);
+    }
 }

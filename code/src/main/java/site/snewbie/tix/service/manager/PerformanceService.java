@@ -70,4 +70,22 @@ public class PerformanceService {
     public List<Performance> getPerformancesByStatusAndTitle(PerformanceStatus status, String title) {
         return performanceRepository.findByStatusAndTitleContaining(status, title);
     }
+
+    @Transactional
+    public Performance updatePerformanceStatus(Long id, PerformanceStatus status) {
+        Performance existingPerformance = performanceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("演出不存在"));
+        existingPerformance.setStatus(status);
+        return performanceRepository.save(existingPerformance);
+    }
+
+    @Transactional
+    public Performance takeOffline(Long id) {
+        return updatePerformanceStatus(id, PerformanceStatus.OFFLINE);
+    }
+
+    @Transactional
+    public Performance takeOnline(Long id) {
+        return updatePerformanceStatus(id, PerformanceStatus.ON_SALE);
+    }
 }
