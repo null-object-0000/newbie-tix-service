@@ -56,4 +56,10 @@ public class WebFrameworkApplication {
 
         return new ResponseEntity<>(fcHeaders, HttpStatus.OK);
     }
+
+    @GetMapping("/env")
+    public ResponseEntity<Map<String, String>> listEnv() {
+        Map<String, String> env = System.getenv();
+        return new ResponseEntity<>(env, HttpStatus.OK);
+    }
 }
