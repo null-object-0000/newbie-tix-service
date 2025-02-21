@@ -1,7 +1,7 @@
-package site.snewbie.tix.repository;
+package site.snewbie.tix.repository.manager;
 
-import site.snewbie.tix.entity.Performance;
-import site.snewbie.tix.entity.PerformanceStatus;
+import site.snewbie.tix.entity.manager.Performance;
+import site.snewbie.tix.entity.manager.PerformanceStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

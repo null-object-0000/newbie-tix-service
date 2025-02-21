@@ -1,7 +1,7 @@
-package site.snewbie.tix.controller;
+package site.snewbie.tix.controller.manager;
 
-import site.snewbie.tix.entity.PerformanceSession;
-import site.snewbie.tix.service.PerformanceSessionService;
+import site.snewbie.tix.entity.manager.PerformanceSession;
+import site.snewbie.tix.service.manager.PerformanceSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

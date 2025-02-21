@@ -1,6 +1,6 @@
-package site.snewbie.tix.repository;
+package site.snewbie.tix.repository.manager;
 
-import site.snewbie.tix.entity.PerformanceTicket;
+import site.snewbie.tix.entity.manager.PerformanceTicket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

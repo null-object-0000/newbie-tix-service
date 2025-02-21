@@ -1,4 +1,4 @@
-package site.snewbie.tix.entity;
+package site.snewbie.tix.entity.manager;
 
 import javax.persistence.*;
 

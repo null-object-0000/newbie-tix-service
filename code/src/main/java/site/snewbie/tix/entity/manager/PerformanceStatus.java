@@ -1,4 +1,4 @@
-package site.snewbie.tix.entity;
+package site.snewbie.tix.entity.manager;
 
 public enum PerformanceStatus {
     COMING_SOON,  // 即将开售

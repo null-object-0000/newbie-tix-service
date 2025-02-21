@@ -1,4 +1,4 @@
-package site.snewbie.tix.entity;
+package site.snewbie.tix.entity.manager;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;

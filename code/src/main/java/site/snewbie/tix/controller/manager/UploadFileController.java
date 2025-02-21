@@ -1,4 +1,4 @@
-package site.snewbie.tix.controller;
+package site.snewbie.tix.controller.manager;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;

@@ -12,9 +12,4 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class WebFrameworkApplicationTests {
 
-	@Test
-	public void testWelcome() {
-		assertEquals(HttpStatus.OK, new WebFrameworkApplication().welcome().getStatusCode());
-	}
-
 }

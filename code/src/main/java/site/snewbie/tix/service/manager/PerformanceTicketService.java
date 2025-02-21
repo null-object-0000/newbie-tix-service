@@ -1,8 +1,7 @@
-package site.snewbie.tix.service.impl;
+package site.snewbie.tix.service.manager;
 
-import site.snewbie.tix.entity.PerformanceTicket;
-import site.snewbie.tix.repository.PerformanceTicketRepository;
-import site.snewbie.tix.service.PerformanceTicketService;
+import site.snewbie.tix.entity.manager.PerformanceTicket;
+import site.snewbie.tix.repository.manager.PerformanceTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,18 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class PerformanceTicketServiceImpl implements PerformanceTicketService {
+public class PerformanceTicketService {
 
     @Autowired
     private PerformanceTicketRepository ticketRepository;
 
-    @Override
     @Transactional
     public PerformanceTicket createTicket(PerformanceTicket ticket) {
         return ticketRepository.save(ticket);
     }
 
-    @Override
     @Transactional
     public PerformanceTicket updateTicket(Long id, PerformanceTicket ticket) {
         PerformanceTicket existingTicket = ticketRepository.findById(id)
@@ -36,19 +33,16 @@ public class PerformanceTicketServiceImpl implements PerformanceTicketService {
         return ticketRepository.save(existingTicket);
     }
 
-    @Override
     @Transactional
     public void deleteTicket(Long id) {
         ticketRepository.deleteById(id);
     }
 
-    @Override
     public PerformanceTicket getTicket(Long id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("票档不存在"));
     }
 
-    @Override
     public List<PerformanceTicket> getTicketsByPerformanceAndSession(Long performanceId, Long sessionId) {
         return ticketRepository.findByPerformanceIdAndSessionId(performanceId, sessionId);
     }
