@@ -1,18 +1,17 @@
 package site.snewbie.tix.entity.app;
 
 import site.snewbie.tix.entity.manager.PerformanceSession;
-import site.snewbie.tix.entity.manager.PerformanceTicket;
 
 import java.util.List;
 
 public class PerformanceSessionVO extends PerformanceSession {
-    private List<PerformanceTicket> tickets;
+    private List<PerformanceTicketVO> tickets;
 
-    public List<PerformanceTicket> getTickets() {
+    public List<PerformanceTicketVO> getTickets() {
         return tickets;
     }
 
-    public void setTickets(List<PerformanceTicket> tickets) {
+    public void setTickets(List<PerformanceTicketVO> tickets) {
         this.tickets = tickets;
     }
 }

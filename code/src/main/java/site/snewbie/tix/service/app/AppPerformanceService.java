@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.snewbie.tix.entity.app.PerformanceSessionVO;
+import site.snewbie.tix.entity.app.PerformanceTicketVO;
 import site.snewbie.tix.entity.app.PerformanceVO;
 import site.snewbie.tix.entity.manager.Performance;
 import site.snewbie.tix.entity.manager.PerformanceSession;
@@ -53,6 +54,8 @@ public class AppPerformanceService {
         BeanUtil.copyProperties(performance, performanceVO);
 
         List<PerformanceSession> sessions = performanceSessionService.getSessionsByPerformance(performance.getId());
+        // 过滤掉已下架的场次
+        sessions = sessions.stream().filter(session -> !PerformanceStatus.OFFLINE.equals(session.getStatus())).collect(Collectors.toList());
         if (CollUtil.isEmpty(sessions)) {
             performanceVO.setStatus(PerformanceStatus.COMING_SOON);
             return performanceVO;
@@ -68,13 +71,13 @@ public class AppPerformanceService {
         performanceVO.setSessions(sessions.stream().map(this::fullPerformanceSessionVO).collect(Collectors.toList()));
 
         // 计算最低和最高价格
-        List<PerformanceTicket> tickets = performanceVO.getSessions().stream()
+        List<PerformanceTicketVO> tickets = performanceVO.getSessions().stream()
                 .flatMap(session -> session.getTickets().stream())
                 .collect(Collectors.toList());
 
         if (!tickets.isEmpty()) {
-            performanceVO.setMinPrice(tickets.stream().map(PerformanceTicket::getPrice).min(BigDecimal::compareTo).get());
-            performanceVO.setMaxPrice(tickets.stream().map(PerformanceTicket::getPrice).max(BigDecimal::compareTo).get());
+            performanceVO.setMinPrice(tickets.stream().map(PerformanceTicketVO::getPrice).min(BigDecimal::compareTo).get());
+            performanceVO.setMaxPrice(tickets.stream().map(PerformanceTicketVO::getPrice).max(BigDecimal::compareTo).get());
         }
 
         // 先看看是不是所有的场次都未开始售票，是的话把演出的状态设置为未开始售票
@@ -83,11 +86,6 @@ public class AppPerformanceService {
             performanceVO.setStatus(PerformanceStatus.COMING_SOON);
         }
 
-        // 判断是否存在任意一个场次是在可购买时间范围内的，把这些场次找出来
-        List<PerformanceSession> availableSessions = sessions.stream()
-                .filter(session -> session.getStartSaleTime().isBefore(LocalDateTime.now()) && session.getEndSaleTime().isAfter(LocalDateTime.now()))
-                .collect(Collectors.toList());
-
         return performanceVO;
     }
 
@@ -95,9 +93,31 @@ public class AppPerformanceService {
         PerformanceSessionVO sessionVO = new PerformanceSessionVO();
         BeanUtil.copyProperties(session, sessionVO);
 
+        // 看场次时间是否未开始售票，是的话把场次状态设置为未开始售票
+        if (session.getStartSaleTime().isAfter(LocalDateTime.now())) {
+            sessionVO.setStatus(PerformanceStatus.COMING_SOON);
+        }
+
         List<PerformanceTicket> tickets = performanceTicketService.getTicketsByPerformanceAndSession(session.getPerformanceId(), session.getId());
-        sessionVO.setTickets(tickets);
+        // 过滤掉已下架的票档
+        tickets = tickets.stream().filter(ticket -> !PerformanceStatus.OFFLINE.equals(ticket.getStatus())).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(tickets)) {
+            sessionVO.setTickets(tickets.stream().map(this::fullPerformanceTicketVO).collect(Collectors.toList()));
+
+            // 如果场次时间是未开始售票，把票的状态设置为未开始售票
+            if (PerformanceStatus.COMING_SOON.equals(sessionVO.getStatus())) {
+                sessionVO.getTickets().forEach(ticket -> ticket.setStatus(PerformanceStatus.COMING_SOON));
+            }
+        }
 
         return sessionVO;
+    }
+
+    private PerformanceTicketVO fullPerformanceTicketVO(PerformanceTicket ticket) {
+        PerformanceTicketVO ticketVO = new PerformanceTicketVO();
+        BeanUtil.copyProperties(ticket, ticketVO);
+        // todo: 后面再处理是否有库存
+        ticketVO.setHasStock(true);
+        return ticketVO;
     }
 }
