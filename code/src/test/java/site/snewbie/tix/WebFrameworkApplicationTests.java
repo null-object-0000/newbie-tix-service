@@ -1,4 +1,4 @@
-package com.example.webframework;
+package site.snewbie.tix;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

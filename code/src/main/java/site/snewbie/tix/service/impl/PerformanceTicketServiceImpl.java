@@ -1,8 +1,8 @@
-package com.example.webframework.service.impl;
+package site.snewbie.tix.service.impl;
 
-import com.example.webframework.entity.PerformanceTicket;
-import com.example.webframework.repository.PerformanceTicketRepository;
-import com.example.webframework.service.PerformanceTicketService;
+import site.snewbie.tix.entity.PerformanceTicket;
+import site.snewbie.tix.repository.PerformanceTicketRepository;
+import site.snewbie.tix.service.PerformanceTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

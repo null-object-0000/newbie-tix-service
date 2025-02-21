@@ -1,7 +1,7 @@
-package com.example.webframework.service;
+package site.snewbie.tix.service;
 
-import com.example.webframework.entity.Performance;
-import com.example.webframework.entity.PerformanceStatus;
+import site.snewbie.tix.entity.Performance;
+import site.snewbie.tix.entity.PerformanceStatus;
 import java.util.List;
 
 public interface PerformanceService {

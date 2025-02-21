@@ -1,7 +1,7 @@
-package com.example.webframework.repository;
+package site.snewbie.tix.repository;
 
-import com.example.webframework.entity.Performance;
-import com.example.webframework.entity.PerformanceStatus;
+import site.snewbie.tix.entity.Performance;
+import site.snewbie.tix.entity.PerformanceStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

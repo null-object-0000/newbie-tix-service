@@ -1,4 +1,4 @@
-package com.example.webframework.entity;
+package site.snewbie.tix.entity;
 
 public enum PerformanceStatus {
     COMING_SOON,  // 即将开售

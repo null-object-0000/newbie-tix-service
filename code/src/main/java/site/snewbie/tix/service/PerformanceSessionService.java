@@ -1,6 +1,6 @@
-package com.example.webframework.service;
+package site.snewbie.tix.service;
 
-import com.example.webframework.entity.PerformanceSession;
+import site.snewbie.tix.entity.PerformanceSession;
 import java.util.List;
 
 public interface PerformanceSessionService {

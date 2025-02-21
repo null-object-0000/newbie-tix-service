@@ -1,8 +1,8 @@
-package com.example.webframework.service.impl;
+package site.snewbie.tix.service.impl;
 
-import com.example.webframework.entity.PerformanceSession;
-import com.example.webframework.repository.PerformanceSessionRepository;
-import com.example.webframework.service.PerformanceSessionService;
+import site.snewbie.tix.entity.PerformanceSession;
+import site.snewbie.tix.repository.PerformanceSessionRepository;
+import site.snewbie.tix.service.PerformanceSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

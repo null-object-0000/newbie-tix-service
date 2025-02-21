@@ -1,7 +1,7 @@
-package com.example.webframework.controller;
+package site.snewbie.tix.controller;
 
-import com.example.webframework.entity.PerformanceTicket;
-import com.example.webframework.service.PerformanceTicketService;
+import site.snewbie.tix.entity.PerformanceTicket;
+import site.snewbie.tix.service.PerformanceTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

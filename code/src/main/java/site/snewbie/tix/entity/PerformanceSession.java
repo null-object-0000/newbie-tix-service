@@ -1,4 +1,4 @@
-package com.example.webframework.entity;
+package site.snewbie.tix.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
