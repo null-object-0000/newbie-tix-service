@@ -72,6 +72,7 @@ public class AppPerformanceService {
 
         // 计算最低和最高价格
         List<PerformanceTicketVO> tickets = performanceVO.getSessions().stream()
+                .filter(session -> CollUtil.isNotEmpty(session.getTickets()))
                 .flatMap(session -> session.getTickets().stream())
                 .collect(Collectors.toList());
 
