@@ -1,5 +1,6 @@
 package site.snewbie.tix.service.manager;
 
+import org.springframework.data.domain.Sort;
 import site.snewbie.tix.entity.manager.Performance;
 import site.snewbie.tix.entity.manager.PerformanceStatus;
 import site.snewbie.tix.repository.manager.PerformanceRepository;
@@ -47,7 +48,7 @@ public class PerformanceService {
     }
 
     public List<Performance> getAllPerformances() {
-        return performanceRepository.findAll();
+        return performanceRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public List<Performance> getPerformancesByStatus(PerformanceStatus status) {

@@ -1,6 +1,7 @@
 package site.snewbie.tix.entity.manager;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "performance_tickets")
@@ -19,7 +20,7 @@ public class PerformanceTicket {
     private String title;
 
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
 
     @Column(name = "total_quantity", nullable = false)
     private Integer totalQuantity;
@@ -57,11 +58,11 @@ public class PerformanceTicket {
         this.title = title;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

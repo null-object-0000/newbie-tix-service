@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/upload/file")
+@RequestMapping("/manager/api/upload/file")
 public class UploadFileController {
 
     @PostMapping("/image")

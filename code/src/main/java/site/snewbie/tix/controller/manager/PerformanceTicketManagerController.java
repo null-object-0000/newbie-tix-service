@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/performances/{performanceId}/sessions/{sessionId}/tickets")
-public class PerformanceTicketController {
+@RequestMapping("/manager/api/performances/{performanceId}/sessions/{sessionId}/tickets")
+public class PerformanceTicketManagerController {
 
     @Autowired
     private PerformanceTicketService ticketService;

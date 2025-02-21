@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/performances/{performanceId}/sessions")
-public class PerformanceSessionController {
+@RequestMapping("/manager/api/performances/{performanceId}/sessions")
+public class PerformanceSessionManagerController {
 
     @Autowired
     private PerformanceSessionService performanceSessionService;

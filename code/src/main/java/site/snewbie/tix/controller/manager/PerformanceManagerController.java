@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/performances")
-@CrossOrigin(origins = "*")
-public class PerformanceController {
+@RequestMapping("/manager/api/performances")
+public class PerformanceManagerController {
 
     @Autowired
     private PerformanceService performanceService;
