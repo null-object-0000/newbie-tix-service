@@ -9,6 +9,7 @@ import site.snewbie.tix.entity.app.PerformanceSessionVO;
 import site.snewbie.tix.entity.app.PerformanceVO;
 import site.snewbie.tix.entity.manager.Performance;
 import site.snewbie.tix.entity.manager.PerformanceSession;
+import site.snewbie.tix.entity.manager.PerformanceStatus;
 import site.snewbie.tix.entity.manager.PerformanceTicket;
 import site.snewbie.tix.service.manager.PerformanceSessionService;
 import site.snewbie.tix.service.manager.PerformanceTicketService;
@@ -52,26 +53,40 @@ public class AppPerformanceService {
         BeanUtil.copyProperties(performance, performanceVO);
 
         List<PerformanceSession> sessions = performanceSessionService.getSessionsByPerformance(performance.getId());
-        if (CollUtil.isNotEmpty(sessions)) {
-            // 取出所有演出开始时间和结束时间
-            List<LocalDateTime> showTimes = sessions.stream()
-                    .flatMap(session -> CollUtil.newArrayList(session.getStartShowTime(), session.getEndShowTime()).stream())
-                    .collect(Collectors.toList());
-            // 组装成 showTime 字符串
-            performanceVO.setShowTime(this.buildShowTime(showTimes));
-
-            performanceVO.setSessions(sessions.stream().map(this::fullPerformanceSessionVO).collect(Collectors.toList()));
-
-            // 计算最低和最高价格
-            List<PerformanceTicket> tickets = performanceVO.getSessions().stream()
-                    .flatMap(session -> session.getTickets().stream())
-                    .collect(Collectors.toList());
-
-            if (!tickets.isEmpty()) {
-                performanceVO.setMinPrice(tickets.stream().map(PerformanceTicket::getPrice).min(BigDecimal::compareTo).get());
-                performanceVO.setMaxPrice(tickets.stream().map(PerformanceTicket::getPrice).max(BigDecimal::compareTo).get());
-            }
+        if (CollUtil.isEmpty(sessions)) {
+            performanceVO.setStatus(PerformanceStatus.COMING_SOON);
+            return performanceVO;
         }
+
+        // 取出所有演出开始时间和结束时间
+        List<LocalDateTime> showTimes = sessions.stream()
+                .flatMap(session -> CollUtil.newArrayList(session.getStartShowTime(), session.getEndShowTime()).stream())
+                .collect(Collectors.toList());
+        // 组装成 showTime 字符串
+        performanceVO.setShowTime(this.buildShowTime(showTimes));
+
+        performanceVO.setSessions(sessions.stream().map(this::fullPerformanceSessionVO).collect(Collectors.toList()));
+
+        // 计算最低和最高价格
+        List<PerformanceTicket> tickets = performanceVO.getSessions().stream()
+                .flatMap(session -> session.getTickets().stream())
+                .collect(Collectors.toList());
+
+        if (!tickets.isEmpty()) {
+            performanceVO.setMinPrice(tickets.stream().map(PerformanceTicket::getPrice).min(BigDecimal::compareTo).get());
+            performanceVO.setMaxPrice(tickets.stream().map(PerformanceTicket::getPrice).max(BigDecimal::compareTo).get());
+        }
+
+        // 先看看是不是所有的场次都未开始售票，是的话把演出的状态设置为未开始售票
+        boolean allSessionsNotStartSale = sessions.stream().allMatch(session -> session.getStartSaleTime().isAfter(LocalDateTime.now()));
+        if (allSessionsNotStartSale) {
+            performanceVO.setStatus(PerformanceStatus.COMING_SOON);
+        }
+
+        // 判断是否存在任意一个场次是在可购买时间范围内的，把这些场次找出来
+        List<PerformanceSession> availableSessions = sessions.stream()
+                .filter(session -> session.getStartSaleTime().isBefore(LocalDateTime.now()) && session.getEndSaleTime().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
 
         return performanceVO;
     }
