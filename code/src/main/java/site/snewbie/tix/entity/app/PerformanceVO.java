@@ -1,7 +1,6 @@
 package site.snewbie.tix.entity.app;
 
 import site.snewbie.tix.entity.manager.Performance;
-import site.snewbie.tix.entity.manager.PerformanceSession;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,4 +43,5 @@ public class PerformanceVO extends Performance {
     public void setSessions(List<PerformanceSessionVO> sessions) {
         this.sessions = sessions;
     }
+
 }

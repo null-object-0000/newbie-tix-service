@@ -25,6 +25,10 @@ public class PerformanceTicket {
     @Column(name = "total_quantity", nullable = false)
     private Integer totalQuantity;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private PerformanceStatus status;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -72,5 +76,13 @@ public class PerformanceTicket {
 
     public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public PerformanceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PerformanceStatus status) {
+        this.status = status;
     }
 }
